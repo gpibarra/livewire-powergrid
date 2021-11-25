@@ -14,6 +14,10 @@ class Button
 
     public string $class = '';
 
+    public array $attributesElement = [];
+
+    public array $attributesElementBind = [];
+
     public string $method = 'get';
 
     public string $view = '';
@@ -75,6 +79,30 @@ class Button
     public function class(string $class_attr): Button
     {
         $this->class = $class_attr;
+
+        return $this;
+    }
+
+    /**
+     * Attributes key-value in view: name-attr="value-attr"
+     * @param array $element_attrs
+     * @return $this
+     */
+    public function attributesElement(array $element_attrs): Button
+    {
+        $this->attributesElement = $element_attrs;
+
+        return $this;
+    }
+
+    /**
+     * Attributes key-value in view: name-attr="{{ $model->{value-attr} }}"
+     * @param array $element_bind_attrs
+     * @return $this
+     */
+    public function attributesElementBind(array $element_bind_attrs): Button
+    {
+        $this->attributesElementBind = $element_bind_attrs;
 
         return $this;
     }

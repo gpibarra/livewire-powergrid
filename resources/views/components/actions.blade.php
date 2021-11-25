@@ -17,34 +17,49 @@
                             $parameters[$param] = $value;
                         }
                     }
+                    $attributesElement = [];
+                    foreach ($action->attributesElementBind as $key => $value) {
+                        $attributesElement[$key] = $row->{$value};
+                    }
+                    foreach ($action->attributesElement as $key => $value) {
+                        $attributesElement[$key] = $value;
+                    }
                 @endphp
 
                 @if($action->event !== '')
                     <a wire:click='$emit("{{ $action->event }}", @json($parameters))'
-                       class="{{ filled($action->class) ? $action->class : $theme->actions->headerBtnClass }}">
+                       class="{{ filled($action->class) ? $action->class : $theme->actions->headerBtnClass }}"
+                       @foreach ($attributesElement as $key => $value) {{ $key }}="{{ $value }}" @endforeach
+                    >
                         {!! $action->caption !!}
                     </a>
                 @elseif($action->view !== '')
                     <a wire:click='$emit("openModal", "{{$action->view}}", @json($parameters))'
-                       class="{{ filled($action->class) ? $action->class : $theme->actions->headerBtnClass }}">
+                       class="{{ filled($action->class) ? $action->class : $theme->actions->headerBtnClass }}"
+                       @foreach ($attributesElement as $key => $value) {{ $key }}="{{ $value }}" @endforeach
+                    >
                         {!! $action->caption !!}
                     </a>
                 @else
                     @if(strtolower($action->method) !== ('get'))
                         <form target="{{ $action->target }}"
                               action="{{ route($action->route, $parameters) }}"
-                              method="{{ $action->method }}">
+                              method="POST">
                             @method($action->method)
                             @csrf
                             <button type="submit"
-                                    class="{{ filled( $action->class) ? $action->class : $theme->actions->headerBtnClass }}">
+                                    class="{{ filled($action->class) ? $action->class : $theme->actions->headerBtnClass }}"
+                                    @foreach ($attributesElement as $key => $value) {{ $key }}="{{ $value }}" @endforeach
+                            >
                                 {!! $action->caption ?? '' !!}
                             </button>
                         </form>
                     @else
                         <a href="{{ route($action->route, $parameters) }}"
                            target="{{ $action->target }}"
-                           class="{{ filled($action->class) ? $action->class : $theme->actions->headerBtnClass }}">
+                           class="{{ filled($action->class) ? $action->class : $theme->actions->headerBtnClass }}"
+                           @foreach ($attributesElement as $key => $value) {{ $key }}="{{ $value }}" @endforeach
+                        >
                             {!! $action->caption !!}
                         </a>
                     @endif
